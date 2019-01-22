@@ -1,0 +1,20 @@
+{
+  "name": "lab_03_blog",
+  "version": "1.0.0",
+  "description": "blog api for pursuit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Abreu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "express-swagger-generator": "^1.1.11",
+    "nodemon": "^1.18.9",
+    "pg-promise": "^8.5.5"
+  }
+}
