@@ -1,10 +1,16 @@
 const app = require('express')();
+
+const userPublic = require('./routes/user');
 const port = 3000;
+
 
 // Middleware
 
 // Routes
-app.get('*', (req, res) => {
+
+app.use('/user', userPublic);
+
+app.use((req, res) => {
     res.json({
         message: 'API BASE',
     });
