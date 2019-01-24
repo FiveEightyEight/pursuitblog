@@ -3,6 +3,7 @@ const app = require('express')();
 const postPublic = require('./routes/post');
 const userPublic = require('./routes/user');
 
+const postPrivate = require('./routes/postPrivate');
 const userPrivate = require('./routes/userPrivate');
 const port = 3000;
 
@@ -17,6 +18,7 @@ app.use('/post', postPublic);
 // Authenticate Middleware
 
 app.use('/user', userPrivate);
+app.use('/post', postPrivate);
 
 
 app.use((req, res) => {
