@@ -1,6 +1,7 @@
 const app = require('express')();
 
 const userPublic = require('./routes/user');
+const userPrivate = require('./routes/userPrivate');
 const port = 3000;
 
 
@@ -9,6 +10,11 @@ const port = 3000;
 // Routes
 
 app.use('/user', userPublic);
+
+// Authenticate Middleware
+
+app.use('/user', userPrivate);
+
 
 app.use((req, res) => {
     res.json({
