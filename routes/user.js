@@ -1,5 +1,5 @@
 const express = require('express');
-
+const UserService = require('../services/user');
 const userPublic = express.Router();
 
 
@@ -18,14 +18,18 @@ userPublic.post('/', (req, res) => {
         });
         return;
     } else {
-        res.json({
-            message: 'user public post',
-        });
+
+        UserService.create(username, email, password)
+        .then( _=> {
+            res.json({
+                message: `${username} crearted`,
+            });
+        }).catch( (err)=> {
+            res.json({
+                error: `could not create ${username}, try again`,
+            })
+        })
     }
-
-
-
-
     
 });
 
