@@ -4,7 +4,7 @@ const commentPrivate = express.Router();
 
 commentPrivate.post('/', (req, res) => {
 
-    // create post
+    // create comment
 
     res.json({
         message: `private POST route: Create comment`,
@@ -14,7 +14,7 @@ commentPrivate.post('/', (req, res) => {
 
 commentPrivate.put('/:comment_id', (req, res) => {
 
-    // modify post
+    // modify comment
     const {comment_id} = req.params;
     res.json({
         message: `private PUT route: Edit comment | comment_id: ${comment_id}`
@@ -23,7 +23,7 @@ commentPrivate.put('/:comment_id', (req, res) => {
 
 commentPrivate.delete('/:comment_id', (req, res) => {
 
-    // delete post 
+    // delete comment 
     const {comment_id} = req.params;
     res.json({
         message: `private DELETE route: Delete comment | comment_id: ${comment_id}`
