@@ -5,10 +5,28 @@ const userPublic = express.Router();
 
 userPublic.post('/', (req, res) => {
     // create user
+    const {
+        username,
+        email,
+        password
+    } = req.body;
+    console.log(req.body);
 
-    res.json({
-        message: 'user public post',
-    });
+    if (!username || !email || !password) {
+        res.json({
+            message: 'require username, email, and password.'
+        });
+        return;
+    } else {
+        res.json({
+            message: 'user public post',
+        });
+    }
+
+
+
+
+    
 });
 
 userPublic.get('/:user_id', (req, res) => {

@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 const app = require('express')();
 
 const commentPublic = require('./routes/comment');
@@ -11,6 +12,11 @@ const port = 3000;
 
 
 // Middleware
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
+
 
 // Routes
 
