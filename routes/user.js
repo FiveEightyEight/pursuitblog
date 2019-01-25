@@ -20,27 +20,45 @@ userPublic.post('/', (req, res) => {
     } else {
 
         UserService.create(username, email, password)
-        .then( _=> {
-            res.json({
-                message: `${username} crearted`,
-            });
-        }).catch( (err)=> {
-            res.json({
-                error: `could not create ${username}, try again`,
+            .then(_ => {
+                res.json({
+                    message: `${username} crearted`,
+                });
+            }).catch((err) => {
+                res.json({
+                    error: `could not create ${username}, try again`,
+                })
             })
-        })
     }
-    
+
 });
 
 userPublic.get('/:user_id', (req, res) => {
     // gets user's info; probably ALL info
+    // start with posts 
     const {
         user_id
     } = req.params;
+    UserService.read(user_id)
+        .then(data => {
+            // console.log(data)
+            res.json({
+                message: data,
+            })
+            return;
+        }).catch( err=> {
+            // console.log(err)
+            res.json({
+                error: 'user not found',
+            })
+
+            return;
+        })
+        /*
     res.json({
         message: `user public get, user_id: ${user_id}`,
     });
+    */
 });
 
 userPublic.get('/:user_id/posts', (req, res) => {

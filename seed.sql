@@ -8,6 +8,7 @@ CREATE TABLE users (
   username VARCHAR (100) UNIQUE NOT NULL,
   email VARCHAR (100) UNIQUE NOT NULL,
   password VARCHAR (250) NOT NULL,
+  bio VARCHAR (250),
   token VARCHAR (100)
 );
 
