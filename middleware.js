@@ -20,9 +20,9 @@ const auth = ((req, res, next) => {
     // console.log('path', path);
     if (path[1] === 'user') {
         // /user path
-        UserService.readToken(token)
+        UserService.read(path[2])
             .then(data => {
-                if (data.token !== token || path[2] !== data.username) {
+                if (data.token !== token) {
                     res.status(401).json({
                         message: 'Authentication Invalid'
                     });
