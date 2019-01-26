@@ -10,7 +10,7 @@ commentPrivate.post('/', (req, res) => {
     // client must pass post_id
 
     const {
-        id,
+        id, // user id
         post_id,
         title,
         body,
@@ -38,7 +38,7 @@ commentPrivate.post('/', (req, res) => {
                     message: `Comment: ${title}, created`
                 });
             return;
-        }).catch( err =>{
+        }).catch(err => {
             res.status(400)
                 .json({
                     error: `failed to created comment`,
@@ -52,9 +52,45 @@ commentPrivate.put('/:comment_id', (req, res) => {
     const {
         comment_id
     } = req.params;
-    res.json({
-        message: `private PUT route: Edit comment | comment_id: ${comment_id}`
-    })
+
+    const {
+        id, // user id
+        post_id,
+        title,
+        body,
+    } = req.body;
+
+    if (!post_id) {
+        res.status(400)
+            .json({
+                message: 'post_id required to update comment',
+            });
+        return;
+    }
+    CommentService.readByID(comment_id)
+        .then(data => {
+
+            if (!title) {
+                title = data[0].title;
+            }
+            if (!body) {
+                body = data[0].title;
+            }
+            return CommentService.update(comment_id, post_id, title, body)
+        })
+        .then(_ => {
+            res.status(200)
+                .json({
+                    message: 'Comment updated!',
+                });
+        })
+        .catch(err => {
+            // console.log(err);
+            res.status(400)
+                .json({
+                    error: 'Failed to update comment',
+                })
+        })
 });
 
 commentPrivate.delete('/:comment_id', (req, res) => {

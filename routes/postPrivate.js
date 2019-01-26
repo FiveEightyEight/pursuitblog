@@ -8,7 +8,7 @@ postPrivate.post('/', (req, res) => {
     // client must pass author(username) in body
 
     const {
-        id,
+        id,  // user id
         author,
         title,
         body,
@@ -43,7 +43,7 @@ postPrivate.put('/:post_id', (req, res) => {
     // modify post
 
     const {
-        id,
+        id,  // user id
         author,
         title,
         body,

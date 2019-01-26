@@ -43,7 +43,7 @@ const update = (id, post_id, title, body) => {
     // console.log('obj', obj)
     // console.log('addKey: ', addKey)
     return db.none(`UPDATE comment SET ${addKey}
-    WHERE comments.id = $[id];`, obj);
+    WHERE comment.id = $[id];`, obj);
 };
 
 module.exports = {
