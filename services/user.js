@@ -95,13 +95,13 @@ const getAllComments = (id) => {
     });
 }
 
-const getComment = (postID, commentID) => {
-    return db.any(`SELECT  p.title, p.body, c.title, c.body
+const getComment = (userID, commentID) => {
+    return db.any(`SELECT  c.title, c.body
     FROM comment c
-    FULL JOIN posts p
-        ON p.id = c.post_id
-    WHERE p.id = $[postID] AND c.id = $[commentID];`, {
-        postID,
+    FULL JOIN users u
+        ON u.id = c.author
+    WHERE u.id = $[userID] AND c.id = $[commentID];`, {
+        userID,
         commentID,
     });
 }

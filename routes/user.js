@@ -129,7 +129,7 @@ userPublic.get('/:user_id/comments', (req, res) => {
     } = req.params;
     UserService.read(user_id)
         .then(data => {
-            console.log(data)
+
             return UserService.getAllComments(data.id)
 
         }).then(data => {
@@ -159,9 +159,27 @@ userPublic.get('/:user_id/comments/:comment_id', (req, res) => {
         user_id,
         comment_id
     } = req.params;
-    res.json({
-        message: `user public get w/ user comments, user_id: ${user_id} | comment_id: ${comment_id}`,
-    });
+    UserService.read(user_id)
+    .then(data => {
+
+        return UserService.getComment(data.id, comment_id)
+
+    }).then(data => {
+        res.status(200)
+            .json({
+                data,
+            });
+        return;
+
+    }).catch(err => {
+
+        res.status(404)
+            .json({
+                message: 'Comment not found',
+            });
+        return;
+
+    })
 
 });
 
