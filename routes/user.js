@@ -1,5 +1,6 @@
 const express = require('express');
 const UserService = require('../services/user');
+
 const userPublic = express.Router();
 
 
@@ -35,14 +36,13 @@ userPublic.post('/', (req, res) => {
 
 userPublic.get('/:user_id', (req, res) => {
     // gets user's info; probably ALL info
-    // start with posts 
     const {
         user_id
     } = req.params;
     UserService.read(user_id)
         .then(data => {
             // console.log(data)
-            res.json({
+            res.status(200).json({
                 message: data,
             })
             return;
@@ -54,11 +54,6 @@ userPublic.get('/:user_id', (req, res) => {
 
             return;
         })
-        /*
-    res.json({
-        message: `user public get, user_id: ${user_id}`,
-    });
-    */
 });
 
 userPublic.get('/:user_id/posts', (req, res) => {
@@ -66,8 +61,28 @@ userPublic.get('/:user_id/posts', (req, res) => {
     const {
         user_id
     } = req.params;
-    res.json({
-        message: `user public get w/ user posts, user_id: ${user_id}`,
+
+    UserService.read(user_id)
+    .then( data =>{
+        console.log('data.id: ', data.id);
+        return UserService.getAllPosts(data.id)
+    }, err => {
+        res.status(400).json({
+            message: `could not find ${user_id}`,
+        })
+        return;
+    })
+    .then( data => {
+        res.status(200).json({
+            data,
+        })
+        return;
+    })
+    .catch( err => {
+        res.status(400).json({
+            message:'no posts found',
+        })
+        return;
     });
 });
 

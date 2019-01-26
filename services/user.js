@@ -1,4 +1,5 @@
 const  db = require('./pgp');
+const PostService = require('./post');
 
 
 const create = (username, email, password) => {
@@ -7,13 +8,22 @@ const create = (username, email, password) => {
 };
 
 const read = (username) => {
-    return db.one(`SELECT username FROM users 
+    return db.one(`SELECT id, username FROM users 
     WHERE username = $[username];`, {username});
 };
 
 const update = (id, username, email, password, bio, token) => {
 
-    
+
+
+};
+
+const getAllPosts = (id) => {
+    return db.any(`SELECT u.username, p.title, p.body
+    FROM users u
+    FULL JOIN posts p
+        ON u.id = p.author
+    WHERE u.id = $[id];`, {id});
 
 };
  
@@ -21,4 +31,5 @@ const update = (id, username, email, password, bio, token) => {
 module.exports = {
     create,
     read,
+    getAllPosts,
 }
