@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-// Routes
+// Pubic Routes
 
 app.use('/user', userPublic);
 app.use('/post', postPublic);
@@ -27,7 +27,7 @@ app.use('/comment', commentPublic);
 // Authenticate Middleware
 app.use(auth);
 
-
+// Private Routes
 app.use('/user', userPrivate);
 app.use('/post', postPrivate);
 app.use('/comment', commentPrivate);

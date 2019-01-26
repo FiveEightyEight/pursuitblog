@@ -23,11 +23,11 @@ userPublic.post('/', (req, res) => {
 
         UserService.create(username, email, password)
             .then(_ => {
-                res.json({
+                res.status(201).json({
                     message: `${username} created`,
                 });
             }).catch((err) => {
-                res.json({
+                res.status(400).json({
                     error: `could not create ${username}, try again`,
                 })
             })

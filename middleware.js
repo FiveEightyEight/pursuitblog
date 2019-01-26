@@ -2,6 +2,7 @@ const UserService = require('./services/user');
 
 
 const auth = ((req, res, next) => {
+    
     const {
         token
     } = req.headers;

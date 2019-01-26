@@ -56,8 +56,8 @@ const update = (id, username, email, password, bio) => {
         }
     };
     addKey = addKey.join(', ');
-    console.log('obj', obj)
-    console.log('addKey: ', addKey)
+    // console.log('obj', obj)
+    // console.log('addKey: ', addKey)
     return db.none(`UPDATE users SET ${addKey}
     WHERE users.id = $[id];`, obj);
 };

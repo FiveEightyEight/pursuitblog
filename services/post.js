@@ -17,8 +17,38 @@ const readByAuthor = (author) => {
     WHERE author = $[author];`, {author});
 };
 
+const update = (id, title, body) => {
+    if (!title && !body) {
+        console.log('UPDATE POST INFO FAILED @ FIRST CONDITIONAL')
+        return new Promise((resolve, reject) => {
+            reject(new Error('Nothing to update'));
+        });
+    };
+    const newValueArr = [title, body];
+    const keyNameArr = ['title', 'body',];
+    let addKey = [];
+    const obj = {id};
+    
+    for (let i = 0; i < newValueArr.length; i++) {
+        const key = keyNameArr[i];
+        const val = newValueArr[i]
+        if (!newValueArr[i]) {
+            continue;
+        } else {
+            addKey.push(`${key} = $[${key}]`);
+            obj[key] = val;
+        }
+    };
+    addKey = addKey.join(', ');
+    // console.log('obj', obj)
+    // console.log('addKey: ', addKey)
+    return db.none(`UPDATE posts SET ${addKey}
+    WHERE posts.id = $[id];`, obj);
+};
+
 module.exports = {
     create,
     readByID, 
     readByAuthor,
+    update,
 };
