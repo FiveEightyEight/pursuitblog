@@ -64,7 +64,7 @@ userPublic.get('/:user_id/posts', (req, res) => {
 
     UserService.read(user_id)
     .then( data =>{
-        console.log('data.id: ', data.id);
+
         return UserService.getAllPosts(data.id)
     }, err => {
         res.status(400).json({
@@ -94,8 +94,27 @@ userPublic.get('/:user_id/posts/:post_id', (req, res) => {
         post_id
     } = req.params;
 
-    res.json({
-        message: `user public get w/ user post ID, user_id: ${user_id} | post_id: ${post_id}`,
+    UserService.read(user_id)
+    .then( data =>{
+
+        return UserService.getPost(data.id, post_id);
+    }, err => {
+        res.status(400).json({
+            message: `could not find ${user_id}`,
+        })
+        return;
+    })
+    .then( data => {
+        res.status(200).json({
+            data,
+        })
+        return;
+    })
+    .catch( err => {
+        res.status(400).json({
+            message:'no posts found',
+        })
+        return;
     });
 
 });

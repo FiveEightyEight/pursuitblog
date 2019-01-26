@@ -26,10 +26,20 @@ const getAllPosts = (id) => {
     WHERE u.id = $[id];`, {id});
 
 };
+
+const getPost = (userID, postID) => {
+    return db.any(`SELECT u.username, p.title, p.body
+    FROM users u
+    FULL JOIN posts p
+        ON u.id = p.author
+    WHERE u.id = $[userID] AND p.id = $[postID];`, {userID, postID});
+};
+
  
 
 module.exports = {
     create,
     read,
     getAllPosts,
+    getPost,
 }
