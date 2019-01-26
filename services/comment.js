@@ -46,9 +46,14 @@ const update = (id, title, body) => {
     WHERE comment.id = $[id];`, obj);
 };
 
+const deleteComment = (id) => {
+    return db.result('DELETE FROM comment WHERE comment.id = $[id]', {id});
+};
+
 module.exports = {
     create,
     readByID, 
     readByAuthor,
     update,
+    deleteComment,
 };

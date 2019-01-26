@@ -83,7 +83,7 @@ commentPrivate.put('/:comment_id', (req, res) => {
                 return CommentService.update(comment_id, title, body);
             };
         }).then(data => {
-            
+
             res.status(200)
                 .json({
                     message: 'Comment updated!',
@@ -102,12 +102,47 @@ commentPrivate.put('/:comment_id', (req, res) => {
 commentPrivate.delete('/:comment_id', (req, res) => {
 
     // delete comment 
-    const {
+     const {
         comment_id
     } = req.params;
-    res.json({
-        message: `private DELETE route: Delete comment | comment_id: ${comment_id}`
-    })
+
+    const {
+        id, // user id
+        post_id,
+        title,
+        body,
+    } = req.body;
+
+    if (!post_id) {
+        res.status(400)
+            .json({
+                message: 'post_id required to update comment',
+            });
+        return;
+    }
+    CommentService.readByID(comment_id)
+    .then(data => {
+        if(data[0].post_id !== parseInt(post_id)) {
+            throw new Error('User not allowed to modify this comment');
+        } else {
+            return CommentService.deleteComment(comment_id);
+        }
+    }).then( del =>{
+
+        res.status(200)
+                .json({
+                    message: 'Comment Deleted!',
+                });
+            return;
+
+    }).catch( err => {
+
+        res.status(400)
+                .json({
+                    error: 'Failed to delete comment',
+                });
+            return;
+    });
 });
 
 module.exports = commentPrivate;
