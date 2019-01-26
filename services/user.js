@@ -86,7 +86,7 @@ const getPost = (userID, postID) => {
 
 const deleteUser = (id) => {
     return db.result('DELETE FROM users WHERE users.id = $[id]', {id});
-}
+};
 
 
 
