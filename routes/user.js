@@ -24,7 +24,7 @@ userPublic.post('/', (req, res) => {
         UserService.create(username, email, password)
             .then(_ => {
                 res.json({
-                    message: `${username} crearted`,
+                    message: `${username} created`,
                 });
             }).catch((err) => {
                 res.json({
