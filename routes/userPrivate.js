@@ -41,9 +41,26 @@ userPrivate.delete('/:user_id', (req, res) => {
     const {
         user_id
     } = req.params;
-    res.json({
-        message: `user private delete, user_id: ${user_id}`,
-    });
+
+    const {
+        id,
+    } = req.body;
+
+    UserService.deleteUser(id)
+    .then( data => {
+        console.log(data)
+
+        res.status(200).json({
+            message: `${user_id} successfully deleted`
+        });
+        return;
+    })
+    .catch( err => {
+        console.log(err)
+        res.status(400).json({
+            error: 'Could not delete user'
+        });
+    })
 
 });
 

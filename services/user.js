@@ -44,9 +44,6 @@ const update = (id, username, email, password, bio) => {
     const keyNameArr = ['username', 'email', 'password', 'bio'];
     let addKey = [];
     const obj = {id};
-    // const addEnd = [];
-    // let base = 'UPDATE users SET ';
-    // let end = 'WHERE users.id = $[id], ';
     
     for (let i = 0; i < newValueArr.length; i++) {
         const key = keyNameArr[i];
@@ -87,6 +84,10 @@ const getPost = (userID, postID) => {
     });
 };
 
+const deleteUser = (id) => {
+    return db.result('DELETE FROM users WHERE users.id = $[id]', {id});
+}
+
 
 
 module.exports = {
@@ -97,4 +98,5 @@ module.exports = {
     update,
     getAllPosts,
     getPost,
-}
+    deleteUser,
+};
