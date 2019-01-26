@@ -32,7 +32,7 @@ postPrivate.post('/', (req, res) => {
         .catch(err => {
             res.status(400)
                 .json({
-                    error: `failed to post`,
+                    error: `failed to create post`,
                 });
         });
 

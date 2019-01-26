@@ -1,19 +1,19 @@
 const  db = require('./pgp');
 
-const create = (author, title, body) => {
-    return db.none(`INSERT INTO comments (author, post_id, title, body)
+const create = (author, post_id, title, body) => {
+    return db.none(`INSERT INTO comment (author, post_id, title, body)
     VALUES ($[author], $[post_id], $[title], $[body]);` , {author, post_id, title, body});
 };
 
 
 // returns everything about comment, may want to omit author id
 const readByID = (id) => {
-    return db.any(`SELECT author, post_id, title, body FROM comments 
+    return db.any(`SELECT author, post_id, title, body FROM comment 
     WHERE id = $[id];`, {id});
 };
 
 const readByAuthor = (author) => {
-    return db.any(`SELECT author, post_id, title, body FROM comments 
+    return db.any(`SELECT author, post_id, title, body FROM comment 
     WHERE author = $[author];`, {author});
 };
 
@@ -42,7 +42,7 @@ const update = (id, post_id, title, body) => {
     addKey = addKey.join(', ');
     // console.log('obj', obj)
     // console.log('addKey: ', addKey)
-    return db.none(`UPDATE comments SET ${addKey}
+    return db.none(`UPDATE comment SET ${addKey}
     WHERE comments.id = $[id];`, obj);
 };
 
