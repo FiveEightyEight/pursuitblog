@@ -1,4 +1,5 @@
 const express = require('express');
+const UserService = require('../services/user');
 
 const userPrivate = express.Router();
 
@@ -9,6 +10,15 @@ userPrivate.put('/:user_id', (req, res) => {
     const {
         user_id
     } = req.params;
+
+    const {
+        id,
+        username,
+        email,
+        password,
+        bio,
+    } = req.body;
+    console.log(req.body);
     res.json({
         message: `user private put, user_id: ${user_id}`,
     });

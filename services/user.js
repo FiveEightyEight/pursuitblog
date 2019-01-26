@@ -12,14 +12,18 @@ const read = (username) => {
     WHERE username = $[username];`, {username});
 };
 
+const readToken = (token) => {
+    return db.one(`SELECT * FROM users 
+    WHERE token = $[token];`, {token});
+};
+
 const login = (id, token) => {
     return db.none(`UPDATE users SET token = $[token]
     WHERE users.id = $[id];` , {id, token});
 };
 
-
-const update = (id, username, email, password, bio, token) => {
-
+const update = (id, username, email, password, bio) => {
+    
 
 
 };
@@ -46,6 +50,7 @@ const getPost = (userID, postID) => {
 module.exports = {
     create,
     read,
+    readToken,
     login,
     getAllPosts,
     getPost,

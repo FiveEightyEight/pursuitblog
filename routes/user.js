@@ -160,15 +160,15 @@ userPublic.post('/login', (req, res) => {
 
     UserService.read(username)
     .then( data => {
-        console.log(0) //////
+
         if(data.username !== username || data.password !== password) {
-            console.log(1) ///////
+
             res.status(401).json({
                 message: 'login info invalid, try again'
             })
             return;
         }
-        console.log(2)
+
             token = uuidv1();
         return UserService.login(data.id, token);
     })

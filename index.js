@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const app = require('express')();
-
+const {auth} = require('./middleware');
 const commentPublic = require('./routes/comment');
 const postPublic = require('./routes/post');
 const userPublic = require('./routes/user');
@@ -25,6 +25,8 @@ app.use('/post', postPublic);
 app.use('/comment', commentPublic);
 
 // Authenticate Middleware
+app.use(auth);
+
 
 app.use('/user', userPrivate);
 app.use('/post', postPrivate);
