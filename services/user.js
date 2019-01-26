@@ -8,9 +8,15 @@ const create = (username, email, password) => {
 };
 
 const read = (username) => {
-    return db.one(`SELECT id, username FROM users 
+    return db.one(`SELECT * FROM users 
     WHERE username = $[username];`, {username});
 };
+
+const login = (id, token) => {
+    return db.none(`UPDATE users SET token = $[token]
+    WHERE users.id = $[id];` , {id, token});
+};
+
 
 const update = (id, username, email, password, bio, token) => {
 
@@ -40,6 +46,7 @@ const getPost = (userID, postID) => {
 module.exports = {
     create,
     read,
+    login,
     getAllPosts,
     getPost,
 }

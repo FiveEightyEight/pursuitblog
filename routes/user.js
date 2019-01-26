@@ -1,5 +1,6 @@
 const express = require('express');
 const UserService = require('../services/user');
+const uuidv1 = require('uuid/v1');
 
 const userPublic = express.Router();
 
@@ -11,7 +12,7 @@ userPublic.post('/', (req, res) => {
         email,
         password
     } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     if (!username || !email || !password) {
         res.json({
@@ -43,7 +44,8 @@ userPublic.get('/:user_id', (req, res) => {
         .then(data => {
             // console.log(data)
             res.status(200).json({
-                message: data,
+                username: data.username,
+                bio: data.bio,
             })
             return;
         }).catch( err=> {
@@ -145,13 +147,46 @@ userPublic.get('/:user_id/comments/:comment_id', (req, res) => {
 
 });
 
-userPublic.post('/user/login', (req, res) => {
+userPublic.post('/login', (req, res) => {
 
     // user login
 
-    res.json({
-        message: 'user public login',
+    const {
+        username,
+        password
+    } = req.body;
+
+    let token = "";
+
+    UserService.read(username)
+    .then( data => {
+        console.log(0) //////
+        if(data.username !== username || data.password !== password) {
+            console.log(1) ///////
+            res.status(401).json({
+                message: 'login info invalid, try again'
+            })
+            return;
+        }
+        console.log(2)
+            token = uuidv1();
+        return UserService.login(data.id, token);
     })
+    .then( data => {
+        res.status(200)
+        .json({
+            message: 'login successful',
+            token,
+        });
+        return;
+    })
+    .catch( err => {
+        console.log(err)
+        res.json({
+            message: 'error, try again'
+        });
+        return;
+    });
 
 });
 
