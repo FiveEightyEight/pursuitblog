@@ -1,10 +1,12 @@
 const express = require('express');
+const CommentService = require('../services/comment');
 
 const commentPrivate = express.Router();
 
 commentPrivate.post('/', (req, res) => {
 
     // create comment
+    // client must pass author(username) in body
 
     res.json({
         message: `private POST route: Create comment`,

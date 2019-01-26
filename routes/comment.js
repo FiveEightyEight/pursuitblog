@@ -1,4 +1,5 @@
 const express = require('express');
+const CommentService = require('../services/comment');
 
 const commentPublic = express.Router();
 
