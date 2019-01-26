@@ -56,7 +56,7 @@ const update = (id, title, body) => {
     WHERE posts.id = $[id];`, obj);
 };
 
-const getAllPostComments = (id) => {
+const getAllComments = (id) => {
     return db.any(`SELECT  p.title, p.body, c.title, c.body
     FROM comment c
     FULL JOIN posts p
@@ -66,7 +66,7 @@ const getAllPostComments = (id) => {
     });
 }
 
-const getPostComment = (postID, commentID) => {
+const getComment = (postID, commentID) => {
     return db.any(`SELECT  p.title, p.body, c.title, c.body
     FROM comment c
     FULL JOIN posts p
@@ -83,6 +83,6 @@ module.exports = {
     readByID,
     readByAuthor,
     update,
-    getAllPostComments,
-    getPostComment,
+    getAllComments,
+    getComment,
 };

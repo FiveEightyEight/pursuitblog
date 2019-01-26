@@ -48,7 +48,7 @@ userPublic.get('/:user_id', (req, res) => {
                 bio: data.bio,
             })
             return;
-        }).catch( err=> {
+        }).catch(err => {
             // console.log(err)
             res.json({
                 error: 'user not found',
@@ -65,27 +65,27 @@ userPublic.get('/:user_id/posts', (req, res) => {
     } = req.params;
 
     UserService.read(user_id)
-    .then( data =>{
+        .then(data => {
 
-        return UserService.getAllPosts(data.id)
-    }, err => {
-        res.status(400).json({
-            message: `could not find ${user_id}`,
+            return UserService.getAllPosts(data.id)
+        }, err => {
+            res.status(400).json({
+                message: `could not find ${user_id}`,
+            })
+            return;
         })
-        return;
-    })
-    .then( data => {
-        res.status(200).json({
-            data,
+        .then(data => {
+            res.status(200).json({
+                data,
+            })
+            return;
         })
-        return;
-    })
-    .catch( err => {
-        res.status(400).json({
-            message:'no posts found',
-        })
-        return;
-    });
+        .catch(err => {
+            res.status(400).json({
+                message: 'no posts found',
+            })
+            return;
+        });
 });
 
 userPublic.get('/:user_id/posts/:post_id', (req, res) => {
@@ -97,27 +97,27 @@ userPublic.get('/:user_id/posts/:post_id', (req, res) => {
     } = req.params;
 
     UserService.read(user_id)
-    .then( data =>{
+        .then(data => {
 
-        return UserService.getPost(data.id, post_id);
-    }, err => {
-        res.status(400).json({
-            message: `could not find ${user_id}`,
+            return UserService.getPost(data.id, post_id);
+        }, err => {
+            res.status(400).json({
+                message: `could not find ${user_id}`,
+            })
+            return;
         })
-        return;
-    })
-    .then( data => {
-        res.status(200).json({
-            data,
+        .then(data => {
+            res.status(200).json({
+                data,
+            })
+            return;
         })
-        return;
-    })
-    .catch( err => {
-        res.status(400).json({
-            message:'no posts found',
-        })
-        return;
-    });
+        .catch(err => {
+            res.status(400).json({
+                message: 'no posts found',
+            })
+            return;
+        });
 
 });
 
@@ -127,9 +127,27 @@ userPublic.get('/:user_id/comments', (req, res) => {
     const {
         user_id
     } = req.params;
-    res.json({
-        message: `user public get w/ user comments, user_id: ${user_id}`,
-    });
+    UserService.read(user_id)
+        .then(data => {
+            console.log(data)
+            return UserService.getAllComments(data.id)
+
+        }).then(data => {
+            res.status(200)
+                .json({
+                    data,
+                });
+            return;
+
+        }).catch(err => {
+
+            res.status(404)
+                .json({
+                    message: 'Comments not found',
+                });
+            return;
+
+        })
 
 });
 
@@ -159,34 +177,34 @@ userPublic.post('/login', (req, res) => {
     let token = "";
 
     UserService.read(username)
-    .then( data => {
+        .then(data => {
 
-        if(data.username !== username || data.password !== password) {
+            if (data.username !== username || data.password !== password) {
 
-            res.status(401).json({
-                message: 'login info invalid, try again'
-            })
-            return;
-        }
+                res.status(401).json({
+                    message: 'login info invalid, try again'
+                })
+                return;
+            }
 
             token = uuidv1();
-        return UserService.login(data.id, token);
-    })
-    .then( data => {
-        res.status(200)
-        .json({
-            message: 'login successful',
-            token,
+            return UserService.login(data.id, token);
+        })
+        .then(data => {
+            res.status(200)
+                .json({
+                    message: 'login successful',
+                    token,
+                });
+            return;
+        })
+        .catch(err => {
+            console.log(err)
+            res.json({
+                message: 'error, try again'
+            });
+            return;
         });
-        return;
-    })
-    .catch( err => {
-        console.log(err)
-        res.json({
-            message: 'error, try again'
-        });
-        return;
-    });
 
 });
 

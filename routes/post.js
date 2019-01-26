@@ -28,7 +28,7 @@ postPublic.get('/:post_id/comments', (req, res) => {
         post_id
     } = req.params;
 
-    PostService.getAllPostComments(post_id)
+    PostService.getAllComments(post_id)
         .then(data => {
             res.status(200)
                 .json({
@@ -54,7 +54,7 @@ postPublic.get('/:post_id/comments/:comment_id', (req, res) => {
         comment_id
     } = req.params;
 
-    PostService.getPostComment(post_id, comment_id)
+    PostService.getComment(post_id, comment_id)
     .then(data => {
         res.status(200)
             .json({

@@ -84,6 +84,28 @@ const getPost = (userID, postID) => {
     });
 };
 
+const getAllComments = (id) => {
+
+    return db.any(`SELECT  c.title, c.body
+    FROM comment c
+    FULL JOIN users u
+        ON u.id = c.author
+    WHERE u.id = $[id];`, {
+        id
+    });
+}
+
+const getComment = (postID, commentID) => {
+    return db.any(`SELECT  p.title, p.body, c.title, c.body
+    FROM comment c
+    FULL JOIN posts p
+        ON p.id = c.post_id
+    WHERE p.id = $[postID] AND c.id = $[commentID];`, {
+        postID,
+        commentID,
+    });
+}
+
 const deleteUser = (id) => {
     return db.result('DELETE FROM users WHERE users.id = $[id]', {id});
 };
@@ -98,5 +120,7 @@ module.exports = {
     update,
     getAllPosts,
     getPost,
+    getAllComments,
+    getComment,
     deleteUser,
 };
