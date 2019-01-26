@@ -9,9 +9,22 @@ commentPublic.get('/:comment_id', (req, res) => {
 
     const {comment_id} = req.params;
 
-    res.json({
-        message: `GET public comment, comment_id: ${comment_id}`,
-    })
+    CommentService.readByID(comment_id)
+    .then( data => {
+        res.status(200)
+        .json({
+            title: data[0].title,
+            body: data[0].body,
+        })
+        return;
+    }).catch( err =>{
+        res.status(404)
+        .json({
+            message: 'Comment not found',
+        });
+        return;
+    });
+
 });
 
 module.exports = commentPublic;
