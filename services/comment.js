@@ -17,7 +17,7 @@ const readByAuthor = (author) => {
     WHERE author = $[author];`, {author});
 };
 
-const update = (id, post_id, title, body) => {
+const update = (id, title, body) => {
     if (!title && !body) {
         console.log('UPDATE COMMENT INFO FAILED @ FIRST CONDITIONAL')
         return new Promise((resolve, reject) => {

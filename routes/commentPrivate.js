@@ -70,27 +70,33 @@ commentPrivate.put('/:comment_id', (req, res) => {
     CommentService.readByID(comment_id)
         .then(data => {
 
-            if (!title) {
-                title = data[0].title;
-            }
-            if (!body) {
-                body = data[0].title;
-            }
-            return CommentService.update(comment_id, post_id, title, body)
-        })
-        .then(_ => {
+            if(data[0].post_id !== parseInt(post_id)) {
+                throw new Error('User not allowed to modify this comment');
+            } else {
+                console.log('in the else')
+                if (!title) {
+                    title = data[0].title;
+                }
+                if (!body) {
+                    body = data[0].title;
+                }
+                return CommentService.update(comment_id, title, body);
+            };
+        }).then(data => {
+            
             res.status(200)
                 .json({
                     message: 'Comment updated!',
                 });
-        })
-        .catch(err => {
-            // console.log(err);
+            return;
+        }).catch(err => {
+
             res.status(400)
                 .json({
                     error: 'Failed to update comment',
-                })
-        })
+                });
+            return;
+        });
 });
 
 commentPrivate.delete('/:comment_id', (req, res) => {
