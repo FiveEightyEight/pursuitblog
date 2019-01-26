@@ -18,9 +18,18 @@ userPrivate.put('/:user_id', (req, res) => {
         password,
         bio,
     } = req.body;
-    console.log(req.body);
-    res.json({
-        message: `user private put, user_id: ${user_id}`,
+
+    UserService.update(id, username, email, password, bio)
+    .then(data => {
+        res.status(200).json({
+            message: `${user_id} successfully updated`
+        });
+        return;
+    }).catch( err => {
+        console.log(err)
+        res.status(400).json({
+            error: 'Could not update user information'
+        });
     });
 
 });
