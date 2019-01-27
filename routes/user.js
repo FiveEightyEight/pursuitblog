@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const express = require('express');
 const UserService = require('../services/user');
 const uuidv1 = require('uuid/v1');
@@ -20,8 +21,10 @@ userPublic.post('/', (req, res) => {
         });
         return;
     } else {
-
-        UserService.create(username, email, password)
+        bcrypt.hash(password, 10)
+            .then(cryptPass => {
+                return UserService.create(username, email, cryptPass);
+            })
             .then(_ => {
                 res.status(201).json({
                     message: `${username} created`,
@@ -160,26 +163,26 @@ userPublic.get('/:user_id/comments/:comment_id', (req, res) => {
         comment_id
     } = req.params;
     UserService.read(user_id)
-    .then(data => {
+        .then(data => {
 
-        return UserService.getComment(data.id, comment_id)
+            return UserService.getComment(data.id, comment_id)
 
-    }).then(data => {
-        res.status(200)
-            .json({
-                data,
-            });
-        return;
+        }).then(data => {
+            res.status(200)
+                .json({
+                    data,
+                });
+            return;
 
-    }).catch(err => {
+        }).catch(err => {
 
-        res.status(404)
-            .json({
-                message: 'Comment not found',
-            });
-        return;
+            res.status(404)
+                .json({
+                    message: 'Comment not found',
+                });
+            return;
 
-    })
+        })
 
 });
 
@@ -193,20 +196,30 @@ userPublic.post('/login', (req, res) => {
     } = req.body;
 
     let token = "";
+    let id = -1;
 
     UserService.read(username)
         .then(data => {
 
-            if (data.username !== username || data.password !== password) {
+            if (data.username !== username) {
 
                 res.status(401).json({
                     message: 'login info invalid, try again'
                 })
                 return;
             }
+            id = data.id;
 
-            token = uuidv1();
-            return UserService.login(data.id, token);
+            return bcrypt.compare(password, data.password);
+
+        }).then(result => {
+
+            if (!result) {
+                throw new Error(`The password didn't match.`)
+            } else {
+                token = uuidv1();
+                return UserService.login(id, token);
+            }
         })
         .then(data => {
             res.status(200)
