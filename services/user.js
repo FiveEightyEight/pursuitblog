@@ -107,7 +107,10 @@ const getComment = (userID, commentID) => {
 }
 
 const deleteUser = (id) => {
-    return db.result('DELETE FROM users WHERE users.id = $[id]', {id});
+    return db.result(`
+    DELETE FROM comment WHERE comment.author = $[id];
+    DELETE FROM posts WHERE posts.author = $[id];
+    DELETE FROM users WHERE users.id = $[id];`, {id});
 };
 
 

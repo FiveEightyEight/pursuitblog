@@ -93,8 +93,22 @@ postPrivate.delete('/:post_id', (req, res) => {
     const {
         post_id
     } = req.params;
-    res.json({
-        message: `private DELETE route: Delete post | post_id: ${post_id}`
+
+
+    PostService.deletePost(post_id)
+    .then( data => {
+        console.log(data)
+
+        res.status(200).json({
+            message: `${post_id} successfully deleted`
+        });
+        return;
+    })
+    .catch( err => {
+        console.log(err)
+        res.status(400).json({
+            error: 'Could not delete post'
+        });
     })
 });
 

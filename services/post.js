@@ -77,6 +77,13 @@ const getComment = (postID, commentID) => {
     });
 }
 
+const deletePost = (id) => {
+    return db.result(`
+    DELETE FROM comment WHERE comment.post_id = $[id];
+    DELETE FROM posts WHERE posts.id = $[id];`, {id});
+};
+
+
 
 module.exports = {
     create,
@@ -85,4 +92,5 @@ module.exports = {
     update,
     getAllComments,
     getComment,
+    deletePost,
 };
